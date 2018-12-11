@@ -58,12 +58,6 @@ const containsUIComponents = (containsUIPredixLibrary || containsUILightningLibr
 let resolveModules = ['node_modules', 'src', appNodeModules];
 let sassIncludePaths = ['node_modules', 'src'];
 
-// Assert this just to be safe.
-// Development builds of React are slow and not intended for production.
-if (env.stringified['process.env'].NODE_ENV !== '"production"') {
-  throw new Error('Production builds must have NODE_ENV=production.');
-}
-
 // Note: defined here because it will be used more than once.
 let cssFilename = 'static/css/[name].[contenthash:8].css';
 let jsFilename = 'static/js/[name].[chunkhash:8].js';
@@ -189,6 +183,15 @@ if (containsUILightningLibrary) {
   sassIncludePaths.push(
     path.resolve(uiLightningPath, 'node_modules'),
     uiLightningPath
+  );
+  plugins.push(
+    new CopyWebpackPlugin([
+      {
+        context: path.resolve(appNodeModules, '@salesforce-ux/design-system/assets'),
+        from: '**/*',
+        to: 'assets',
+      },
+    ])
   );
 }
 
