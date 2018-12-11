@@ -11,7 +11,7 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <% if (htmlWebpackPlugin.options.containsUILightning && !htmlWebpackPlugin.options.isProduction) { %>
-      <link href="%PUBLIC_URL%/assets/styles/salesforce-lightning-design-system.css" rel="stylesheet" />
+      <link href="%PUBLIC_URL%/assets/styles/salesforce-lightning-design-system.min.css" rel="stylesheet" />
     <% } %>
     <% if (htmlWebpackPlugin.options.containsUIComponents) { %>
       <link href="<%=htmlWebpackPlugin.files.css[0]%>" rel="stylesheet" />
