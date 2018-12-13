@@ -44,6 +44,12 @@ const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
 const publicUrl = publicPath.slice(0, -1);
 
+// style files regexes
+const cssRegex = /\.css$/;
+//const cssModuleRegex = /\.module\.css$/;
+const sassRegex = /\.(scss|sass)$/;
+//const sassModuleRegex = /\.module\.(scss|sass)$/;
+
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
@@ -80,10 +86,10 @@ if (containsUILightningLibrary) {
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
 // However, our output is structured with css, js and media folders.
 // To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = shouldUseRelativeAssetPaths
-  ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
-  : {};
+// const extractTextPluginOptions = shouldUseRelativeAssetPaths
+//   ? // Making sure that the publicPath goes back to to build folder.
+//     { publicPath: Array(cssFilename.split('/').length).join('../') }
+//   : {};
 
 const plugins = [
   // Makes some environment variables available in index.html.
@@ -431,59 +437,52 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: [/\.css$/, /\.scss$/],
-            loader: ExtractTextPlugin.extract(
-              Object.assign(
-                {
-                  fallback: {
-                    loader: require.resolve('style-loader'),
-                    options: {
-                      hmr: false,
-                    },
-                  },
-                  use: [
-                    {
-                      loader: require.resolve('css-loader'),
-                      options: {
-                        importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap,
-                      },
-                    },
-                    {
-                      loader: require.resolve('postcss-loader'),
-                      options: {
-                        // Necessary for external CSS imports to work
-                        // https://github.com/facebookincubator/create-react-app/issues/2677
-                        ident: 'postcss',
-                        sourceMap: shouldUseSourceMap,
-                        plugins: () => [
-                          require('postcss-flexbugs-fixes'),
-                          autoprefixer({
-                            browsers: [
-                              '>1%',
-                              'last 4 versions',
-                              'Firefox ESR',
-                              'not ie < 9', // React doesn't support IE8 anyway
-                            ],
-                            flexbox: 'no-2009',
-                          }),
-                        ],
-                      },
-                    },
-                    {
-                      loader: require.resolve('sass-loader'),
-                      options: {
-                        sourceMap: shouldUseSourceMap,
-                        includePaths: sassIncludePaths,
-                      },
-                    },
-                  ],
+            test: [cssRegex, sassRegex],
+            loaders: [
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: Object.assign(
+                  {},
+                  shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined
+                ),
+              },
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1,
+                  minimize: true,
+                  sourceMap: shouldUseSourceMap,
                 },
-                extractTextPluginOptions
-              )
-            ),
-            // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+              },
+              {
+                // Options for PostCSS as we reference these options twice
+                // Adds vendor prefixing based on your specified browser support in
+                // package.json
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebook/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    require('postcss-preset-env')({
+                      autoprefixer: {
+                        flexbox: 'no-2009',
+                      },
+                      stage: 3,
+                    }),
+                  ],
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+              },
+              {
+                loader: require.resolve('sass-loader'),
+                options: {
+                  sourceMap: shouldUseSourceMap,
+                  includePaths: sassIncludePaths,
+                },
+              },
+            ].filter(Boolean)
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
