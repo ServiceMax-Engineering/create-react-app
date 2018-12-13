@@ -196,8 +196,6 @@ if (containsUIPredixLibrary) {
   );
 }
 
-console.warn('lib.jsIncludePaths', lib.jsIncludePaths);
-
 const jsIncludePaths = libs.reduce(
   (result, lib) => {
     const jsIncludePathsForLib = lib.jsIncludePaths || [];
