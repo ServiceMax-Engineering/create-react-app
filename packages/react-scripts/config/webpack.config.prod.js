@@ -196,6 +196,8 @@ if (containsUIPredixLibrary) {
   );
 }
 
+console.warn('lib.jsIncludePaths', lib.jsIncludePaths);
+
 const jsIncludePaths = libs.reduce(
   (result, lib) => {
     const jsIncludePathsForLib = lib.jsIncludePaths || [];
@@ -210,6 +212,8 @@ const jsIncludePaths = libs.reduce(
   },
   [paths.appSrc]
 );
+
+console.warn('jsIncludePaths', jsIncludePaths);
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
