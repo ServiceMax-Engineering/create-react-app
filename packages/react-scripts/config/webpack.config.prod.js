@@ -472,7 +472,7 @@ module.exports = {
                       stage: 3,
                     }),
                   ],
-                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  sourceMap: shouldUseSourceMap,
                 },
               },
               {
