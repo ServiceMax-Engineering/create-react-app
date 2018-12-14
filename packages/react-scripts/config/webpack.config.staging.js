@@ -85,15 +85,6 @@ if (containsUILightningLibrary) {
   jsFilename = 'static/js/[name].js';
 }
 
-// ExtractTextPlugin expects the build output to be flat.
-// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
-// However, our output is structured with css, js and media folders.
-// To have this structure working with relative paths, we have to use custom options.
-// const extractTextPluginOptions = shouldUseRelativeAssetPaths
-//   ? // Making sure that the publicPath goes back to to build folder.
-//     { publicPath: Array(cssFilename.split('/').length).join('../') }
-//   : {};
-
 const plugins = [
   // Inlines the webpack runtime script. This script is too small to warrant
   // a network request.
@@ -257,7 +248,7 @@ module.exports = {
         .replace(/\\/g, '/'),
   },
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [
       // This is only used in production mode
       new TerserPlugin({
