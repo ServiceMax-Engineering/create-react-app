@@ -14,7 +14,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-//const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -27,6 +27,9 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const libs = require('./libs');
+
+// should we inline the runtime chunking process
+const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -92,6 +95,10 @@ if (containsUILightningLibrary) {
 //   : {};
 
 const plugins = [
+  // Inlines the webpack runtime script. This script is too small to warrant
+  // a network request.
+  shouldInlineRuntimeChunk &&
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime~.+[.]js/]),
   // Makes some environment variables available in index.html.
   // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
   // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -126,7 +133,7 @@ const plugins = [
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     // both options are optional
-    filename: 'static/css/[name].[contenthash:8].css',
+    filename: cssFilename,
     chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
   }),
   // Generate a manifest file which contains a mapping of all asset filenames

@@ -95,8 +95,10 @@ if (containsUILightningLibrary) {
 //   : {};
 
 const plugins = [
+  // Inlines the webpack runtime script. This script is too small to warrant
+  // a network request.
   shouldInlineRuntimeChunk &&
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime~.+[.]js/]),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime~.+[.]js/]),
   // Makes some environment variables available in index.html.
   // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
   // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -131,7 +133,7 @@ const plugins = [
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     // both options are optional
-    filename: 'static/css/[name].[contenthash:8].css',
+    filename: cssFilename,
     chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
   }),
   // Generate a manifest file which contains a mapping of all asset filenames
