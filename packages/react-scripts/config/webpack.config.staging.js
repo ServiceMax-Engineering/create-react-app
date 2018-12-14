@@ -103,6 +103,7 @@ const plugins = [
     containsUIComponents: containsUIComponents,
     containsUIPredix: containsUIPredixLibrary,
     containsUILightning: containsUILightningLibrary,
+    isStaging: true,
     minify: {
       removeComments: true,
       collapseWhitespace: true,
