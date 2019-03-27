@@ -76,6 +76,8 @@ cd my-app
 
 Inside the newly created project, you can run some built-in commands:
 
+Also note, our components are tested on Node version: 8.14.1 and npm version: 6.4.1.
+
 ### `npm start` or `yarn start`
 
 Runs the app in development mode.<br>
