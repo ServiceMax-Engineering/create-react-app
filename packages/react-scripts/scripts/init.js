@@ -52,6 +52,7 @@ module.exports = function(
     tree: 'react-scripts tree',
     'sf-server': 'node ./src/node/server.js',
     'sf-build': 'react-scripts salesforce',
+    'package-scheduler': 'react-scripts scheduler',
   };
 
   fs.writeFileSync(

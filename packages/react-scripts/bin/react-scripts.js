@@ -19,11 +19,11 @@ const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
 
 switch (script) {
   case 'build':
-  case 'salesforce':
   case 'eject':
+  case 'scheduler':
+  case 'salesforce':
   case 'start':
-  case 'test':
-  case 'tree': {
+  case 'test': {
     const result = spawn.sync(
       'node',
       nodeArgs
