@@ -1,6 +1,10 @@
 {
   "name": "@svmx/react-scripts",
+<<<<<<< HEAD
   "version": "2.0.0",
+=======
+  "version": "1.4.1",
+>>>>>>> e0e654e38f45ba30151017f34491ec6ed9eef453
   "description": "ServiceMax Configuration and scripts for Create React App.",
   "repository": "ServiceMax-Engineering/create-react-app",
   "license": "MIT",
@@ -59,9 +63,12 @@
     "jest": "23.6.0",
     "jest-pnp-resolver": "1.0.1",
     "jest-resolve": "23.6.0",
+    "mini-css-extract-plugin": "0.5.0",
     "node-sass": "4.5.3",
     "object-assign": "4.1.1",
-    "postcss-flexbugs-fixes": "3.2.0",
+    "optimize-css-assets-webpack-plugin": "5.0.1",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-preset-env": "6.5.0",
     "postcss-loader": "3.0.0",
     "prettier": "1.15.3",
     "prettier-eslint-cli": "4.1.1",
@@ -76,9 +83,10 @@
     "stylelint-config-sass-guidelines": "^3.1.0",
     "stylelint-config-standard": "^17.0.0",
     "sw-precache-webpack-plugin": "0.11.5",
+    "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
     "webpack": "4.19.1",
-    "webpack-dev-server": "3.1.9",
+    "webpack-dev-server": "3.1.11",
     "webpack-manifest-plugin": "2.0.4",
     "whatwg-fetch": "2.0.3"
   },

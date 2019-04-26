@@ -10,11 +10,17 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isDevelopment) { %>
-      <link href="%PUBLIC_URL%/assets/styles/salesforce-lightning-design-system.css" rel="stylesheet" />
+    <% if (htmlWebpackPlugin.options.containsUILightning && !htmlWebpackPlugin.options.isProduction) { %>
+      <link href="%PUBLIC_URL%/assets/styles/salesforce-lightning-design-system.min.css" rel="stylesheet" />
     <% } %>
-    <% if (htmlWebpackPlugin.options.containsUIComponents) { %>
-      <link href="<%=htmlWebpackPlugin.files.css[0]%>" rel="stylesheet" />
+    <% if (htmlWebpackPlugin.options.containsUIComponents && htmlWebpackPlugin.files.css.length > 0) { %>
+      <!--
+        In staging & production, the files are bundled, and all of the chunked files
+        will need to be loaded individually
+      -->
+      <% for (var i = 0; i < htmlWebpackPlugin.files.css.length; i++) { %>
+        <link href="<%=htmlWebpackPlugin.files.css[i]%>" rel="stylesheet" />
+      <% } %>
     <% } %>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -26,19 +32,19 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>ServiceMax</title>
-    <% if (htmlWebpackPlugin.options.containsUILightning && !htmlWebpackPlugin.options.isDevelopment) { %>
+    <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
       <apex:slds/>
     <% } %>
   </head>
   <body>
-  <% if (htmlWebpackPlugin.options.containsUILightning && !htmlWebpackPlugin.options.isDevelopment) { %>
+  <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
     <div class="slds-scope">
   <% } %>
       <noscript>
         You need to enable JavaScript to run this app.
       </noscript>
       <div id="root"></div>
-  <% if (htmlWebpackPlugin.options.containsUILightning && !htmlWebpackPlugin.options.isDevelopment) { %>
+  <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
     </div>
   <% } %>
     <!--
@@ -54,17 +60,17 @@
     -->
 
     <% if (htmlWebpackPlugin.options.containsUILightning) { %>
-      <% if (!htmlWebpackPlugin.options.isDevelopment) { %>
-        <script>
-          var isRemote = true;
-          var PUBLIC_URL = "%PUBLIC_URL%";
-          var ASSET_ROOT = PUBLIC_URL + "{!URLFOR($Asset.SLDS)}";
-        </script>
+      <script>
+      <% if (htmlWebpackPlugin.options.isProduction) { %>
+        var isRemote = true;
+        var PUBLIC_URL = "%PUBLIC_URL%";
+        var ASSET_ROOT = "{!URLFOR($Asset.SLDS)}";
+      <% } else if (htmlWebpackPlugin.options.isStaging) { %>
+        var ASSET_ROOT = "%PUBLIC_URL%/assets";
       <% } else { %>
-        <script>
-          var ASSET_ROOT = "/assets";
-        </script>
+        var ASSET_ROOT = "/assets";
       <% } %>
+      </script>
     <% } %>
 
     <% if (htmlWebpackPlugin.options.containsUIPredix) { %>
@@ -92,7 +98,13 @@
       <style include="px-theme-styles" is="custom-style"></style>
     </custom-style>
     <% } else { %>
-      <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+      <!--
+        In staging & production, the files are bundled, and all of the chunked files
+        will need to be loaded individually
+      -->
+      <% for (var i = 0; i < htmlWebpackPlugin.files.js.length; i++) { %>
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
+      <% } %>
     <% } %>
   </body>
 </html>

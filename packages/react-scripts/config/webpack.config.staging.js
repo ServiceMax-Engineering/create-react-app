@@ -73,8 +73,8 @@ let sassIncludePaths = ['node_modules', 'src'];
 
 // Assert this just to be safe.
 // Development builds of React are slow and not intended for production.
-if (env.stringified['process.env'].NODE_ENV !== '"production"') {
-  throw new Error('Production builds must have NODE_ENV=production.');
+if (env.stringified['process.env'].NODE_ENV !== '"staging"') {
+  throw new Error('Staging builds must have NODE_ENV=staging.');
 }
 
 // Note: defined here because it will be used more than once.
@@ -103,7 +103,7 @@ const plugins = [
     containsUIComponents: containsUIComponents,
     containsUIPredix: containsUIPredixLibrary,
     containsUILightning: containsUILightningLibrary,
-    isProduction: true,
+    isStaging: true,
     minify: {
       removeComments: true,
       collapseWhitespace: true,
@@ -179,6 +179,15 @@ if (containsUILightningLibrary) {
     path.resolve(uiLightningPath, 'node_modules'),
     uiLightningPath
   );
+  plugins.push(
+    new CopyWebpackPlugin([
+      {
+        context: path.resolve(appNodeModules, '@salesforce-ux/design-system/assets'),
+        from: '**/*',
+        to: 'assets',
+      },
+    ])
+  );
 }
 
 if (containsUIPredixLibrary) {
@@ -240,7 +249,7 @@ module.exports = {
         .replace(/\\/g, '/'),
   },
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [
       // This is only used in production mode
       new TerserPlugin({
