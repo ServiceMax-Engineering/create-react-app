@@ -105,6 +105,15 @@ if (containsUILightningLibrary) {
       },
     ])
   );
+  plugins.push(
+    new CopyWebpackPlugin([
+      {
+        context: path.resolve(uiLightningPath, 'lib/components/Scheduler/files'),
+        from: '**/*',
+        to: 'assets/scheduler',
+      },
+    ])
+  );
 }
 
 if (containsUIPredixLibrary) {

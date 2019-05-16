@@ -28,6 +28,12 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const libs = require('./libs');
 
+// should we enable split chunking or not
+const shouldUseSplitChunks = process.env.ENABLE_SPLIT_CHUNKS !== 'false';
+
+// should we enable runtime chunking
+const shouldUseRuntimeChunk = process.env.GENERATE_RUNTIME_CHUNK !== 'false';
+
 // should we inline the runtime chunking process
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
@@ -84,6 +90,19 @@ if (containsUILightningLibrary) {
   cssFilename = 'static/css/[name].css';
   jsFilename = 'static/js/[name].js';
 }
+
+// Use this option to disable split chunks
+const disableSplitChunks = {
+  cacheGroups: {
+    default: false,
+  },
+};
+
+// Use this as default option for split chunks
+const defaultSplitChunks = {
+  chunks: 'all',
+  name: false,
+};
 
 const plugins = [
   // Inlines the webpack runtime script. This script is too small to warrant
@@ -314,13 +333,10 @@ module.exports = {
     // Automatically split vendor and commons
     // https://twitter.com/wSokra/status/969633336732905474
     // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-    splitChunks: {
-      chunks: 'all',
-      name: false,
-    },
+    splitChunks: shouldUseSplitChunks ? defaultSplitChunks : disableSplitChunks,
     // Keep the runtime chunk seperated to enable long term caching
     // https://twitter.com/wSokra/status/969679223278505985
-    runtimeChunk: true,
+    runtimeChunk: shouldUseRuntimeChunk,
   },
   resolve: {
     symlinks: false,
