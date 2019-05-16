@@ -73,6 +73,7 @@ const uiLibBuiltBowerPath = path.resolve(uiPredixPath, 'build/polymer');
 const containsUIPredixLibrary = fs.existsSync( uiPredixPath);
 const containsUILightningLibrary = fs.existsSync(uiLightningPath);
 const containsUIComponents = (containsUIPredixLibrary || containsUILightningLibrary);
+const containsUIScheduler = env.stringified['process.env'].REACT_APP_INCLUDE_SCHEDULER;
 
 let resolveModules = ['node_modules', 'src', appNodeModules];
 let sassIncludePaths = ['node_modules', 'src'];
@@ -122,6 +123,7 @@ const plugins = [
     containsUIComponents: containsUIComponents,
     containsUIPredix: containsUIPredixLibrary,
     containsUILightning: containsUILightningLibrary,
+    containsUIScheduler: containsUIScheduler,
     isProduction: true,
     minify: {
       removeComments: true,
