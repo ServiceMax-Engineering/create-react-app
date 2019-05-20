@@ -73,6 +73,7 @@ const uiLibBuiltBowerPath = path.resolve(uiPredixPath, 'build/polymer');
 const containsUIPredixLibrary = fs.existsSync( uiPredixPath);
 const containsUILightningLibrary = fs.existsSync(uiLightningPath);
 const containsUIComponents = (containsUIPredixLibrary || containsUILightningLibrary);
+const containsUIScheduler = env.stringified['process.env'].REACT_APP_INCLUDE_SCHEDULER;
 
 let resolveModules = ['node_modules', 'src', appNodeModules];
 let sassIncludePaths = ['node_modules', 'src'];
@@ -122,6 +123,7 @@ const plugins = [
     containsUIComponents: containsUIComponents,
     containsUIPredix: containsUIPredixLibrary,
     containsUILightning: containsUILightningLibrary,
+    containsUIScheduler: containsUIScheduler,
     isStaging: true,
     minify: {
       removeComments: true,
@@ -204,6 +206,18 @@ if (containsUILightningLibrary) {
         context: path.resolve(appNodeModules, '@salesforce-ux/design-system/assets'),
         from: '**/*',
         to: 'assets',
+      },
+    ])
+  );
+}
+
+if (containsUIScheduler) {
+  plugins.push(
+    new CopyWebpackPlugin([
+      {
+        context: path.resolve(uiLightningPath, 'lib/components/Scheduler/files'),
+        from: '**/*',
+        to: 'assets/scheduler',
       },
     ])
   );
@@ -415,20 +429,23 @@ module.exports = {
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
         oneOf: [
+          // Add the raw loader for custom ServiceMax SVG assets loaded through React
+          {
+            test: [/\.svg$/],
+            issuer: {
+              test: /\.jsx?$/,
+            },
+            loader: require.resolve('raw-loader'),
+          },
           // "url" loader works just like "file" loader but it also embeds
           // assets smaller than specified size as data URLs to avoid requests.
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
             loader: require.resolve('url-loader'),
             options: {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
-          },
-          // Add the raw loader for custom ServiceMax SVG assets loaded through React
-          {
-            test: [/\.svg$/],
-            loader: require.resolve('raw-loader'),
           },
           // Process JS with Babel.
           {
