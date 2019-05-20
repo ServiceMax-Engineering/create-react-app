@@ -24,7 +24,7 @@
 
     <% if (htmlWebpackPlugin.options.containsUIComponents && htmlWebpackPlugin.files.css.length > 0) { %>
       <% for (var i = 0; i < htmlWebpackPlugin.files.css.length; i++) { %>
-        <link href="<%=htmlWebpackPlugin.files.css[i]%>" rel="stylesheet" />
+        <link href="%PUBLIC_URL%/<%=htmlWebpackPlugin.files.css[i]%>" rel="stylesheet" />
       <% } %>
     <% } %>
     
@@ -117,7 +117,7 @@
         will need to be loaded individually
       -->
       <% for (var i = 0; i < htmlWebpackPlugin.files.js.length; i++) { %>
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
+        <script type="text/javascript" src="%PUBLIC_URL%/<%= htmlWebpackPlugin.files.js[i] %>"></script>
       <% } %>
     <% } %>
   </body>
