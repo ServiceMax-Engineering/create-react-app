@@ -42,10 +42,13 @@
     <!--
       Unlike Visualforce page, there is no equivalent slds styles loading on LCC lightning page,
       Rather we need to generate .svmx-scope'd styles and push it to static resource
-      https://www.lightningdesignsystem.com/platforms/lightning/
+      https://tools.lightningdesignsystem.com/css-customizer
+      For now this file needs to be manually generated from above URL.
+      Add a Custom Scope to the CSS in your Static Resource e.g. `svmx-scope` and
+      copy/paste this generated file onto your `build` folder static/css.
     -->
       <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
-        <link href="/static/css/salesforce-lightning-design-system.min.css" rel="stylesheet" />
+        <link href="static/css/salesforce-lightning-design-system.min.css" rel="stylesheet" />
       <% } %>
 
     <% } else { %>
@@ -59,9 +62,25 @@
     <% } %>
   </head>
   <body>
-  <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
-    <div class="slds-scope">
-  <% } %>
+    <% if (htmlWebpackPlugin.options.isTargetLightningPage) { %>
+      <!--
+        Unlike Visualforce page, there is no equivalent slds styles loading on LCC lightning page,
+        Rather we need to generate .svmx-scope'd styles and push it to static resource
+        https://www.lightningdesignsystem.com/platforms/lightning/
+      -->
+        <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
+          <div class="svmx-scope">
+        <% } %>
+  
+    <% } else { %>
+        <!--
+          Allows Visualforce pages to reference Lightning Design System styling and to include custom themes.
+          https://developer.salesforce.com/docs/atlas.en-us.pages.meta/pages/pages_compref_slds.htm 
+        -->
+        <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
+          <div class="slds-scope">
+        <% } %>
+    <% } %>
       <noscript>
         You need to enable JavaScript to run this app.
       </noscript>
