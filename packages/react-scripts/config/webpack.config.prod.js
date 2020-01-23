@@ -37,6 +37,9 @@ const shouldUseRuntimeChunk = process.env.GENERATE_RUNTIME_CHUNK !== 'false';
 // should we inline the runtime chunking process
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
+// Determine if the target page is LCC <lightning:container src=''/> page and not Visualforce page
+const isTargetLightningPage = process.env.IS_TARGETPAGE_LIGHTNING === 'true';
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 let publicPath = paths.servedPath;
@@ -127,6 +130,7 @@ const plugins = [
     containsUIPredix: containsUIPredixLibrary,
     containsUILightning: containsUILightningLibrary,
     containsUIScheduler: containsUIScheduler,
+    isTargetLightningPage: isTargetLightningPage,
     isProduction: true,
     minify: {
       removeComments: true,

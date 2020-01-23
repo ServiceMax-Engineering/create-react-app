@@ -38,8 +38,24 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>ServiceMax</title>
-    <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
-      <apex:slds/>
+    <% if (htmlWebpackPlugin.options.isTargetLightningPage) { %>
+    <!--
+      Unlike Visualforce page, there is no equivalent slds styles loading on LCC lightning page,
+      Rather we need to generate .svmx-scope'd styles and push it to static resource
+      https://www.lightningdesignsystem.com/platforms/lightning/
+    -->
+      <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
+        <link href="/static/css/salesforce-lightning-design-system.min.css" rel="stylesheet" />
+      <% } %>
+
+    <% } else { %>
+      <!--
+        Allows Visualforce pages to reference Lightning Design System styling and to include custom themes.
+        https://developer.salesforce.com/docs/atlas.en-us.pages.meta/pages/pages_compref_slds.htm 
+      -->
+      <% if (htmlWebpackPlugin.options.containsUILightning && htmlWebpackPlugin.options.isProduction) { %>
+        <apex:slds/>
+      <% } %>
     <% } %>
   </head>
   <body>
