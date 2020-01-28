@@ -106,6 +106,12 @@
         var isRemote = true;
         var PUBLIC_URL = "%PUBLIC_URL%";
         var ASSET_ROOT = "{!URLFOR($Asset.SLDS)}";
+      <% } else if (htmlWebpackPlugin.options.isProduction && htmlWebpackPlugin.options.isTargetLightningPage) { %>
+        // Unlike VFPage, there is no easy way to expose SLDS root path from lightning page
+        // Again IMO $Asset.SLDS returns nothing but `/_slds/` and it will be verfied on different orgs
+        // TODO: Investigate if possible to read and expose dynamic SLDS path from lightning Global Value Providers
+        // Ref.: https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/expr_source.htm
+        var ASSET_ROOT = "/_slds/";
       <% } else if (htmlWebpackPlugin.options.isStaging) { %>
         var ASSET_ROOT = "%PUBLIC_URL%/assets";
       <% } else { %>
