@@ -207,6 +207,18 @@ if (containsUILightningLibrary) {
     path.resolve(uiLightningPath, 'node_modules'),
     uiLightningPath
   );
+  // TODO: UI-4511: The copied file is still missing `slds-cope`
+  // For now it's still going to be manual step downloading specifiv ver & slds-scope'd from
+  // https://tools.lightningdesignsystem.com/css-customizer
+  // plugins.push(
+  //   new CopyWebpackPlugin([
+  //     {
+  //       context: path.resolve(paths.appNodeModules, '@salesforce-ux/design-system/assets/styles'),
+  //       from: '**/*.min.css',
+  //       to: `${paths.appBuild}/static/css`,
+  //     },
+  //   ])
+  // );
 }
 
 if (containsUIPredixLibrary) {
