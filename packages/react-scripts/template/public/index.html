@@ -112,6 +112,7 @@
         // TODO: Investigate if possible to read and expose dynamic SLDS path from lightning Global Value Providers
         // Ref.: https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/expr_source.htm
         var ASSET_ROOT = "/_slds/";
+        var isTargetLightningPage = true;
       <% } else if (htmlWebpackPlugin.options.isStaging) { %>
         var ASSET_ROOT = "%PUBLIC_URL%/assets";
       <% } else { %>

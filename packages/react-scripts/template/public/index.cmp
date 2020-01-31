@@ -1,0 +1,11 @@
+<!-- 
+    lightning:container should be nested inside an aura component and src points to named static resource
+    of your external ReactJS application.
+    One can communicate between your ReactJS App and Aura lightning component(send/receive)
+    Ref. to its controller sample code
+  -->
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <lightning:container aura:id="SFAReactApp" src="{!$Resource.SFA_ConfigurationDemo + '/index.html'}"
+    onmessage="{!c.handleMessage}" />
+</aura:component>

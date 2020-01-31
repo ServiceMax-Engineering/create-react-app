@@ -1,0 +1,68 @@
+<apex:page title="SFA Configuration" controller="SFA_Configuration" standardStylesheets="false" sidebar="true" showHeader="true">
+  <script>
+    window.SVMX_SFA_JSR = {
+      jsrActionMapping: {
+        JsrGetUserInfo: '{!$RemoteAction.SFA_Configuration.JsrGetUserInfo}',
+        JsrGetSFAProcessList: '{!$RemoteAction.SFA_Configuration.JsrGetSFAProcessList}',
+        JsrGetSFAProcessInfo: '{!$RemoteAction.SFA_Configuration.JsrGetSFAProcessInfo}',
+        JsrSaveProcess: '{!$RemoteAction.SFA_Configuration.JsrSaveProcess}',
+        JsrDeleteProcess: '{!$RemoteAction.SFA_Configuration.JsrDeleteProcess}',
+        JsrGetExpressionDetails: '{!$RemoteAction.SFA_Configuration.JsrGetExpressionDetails}',
+        JsrGetFieldList: '{!$RemoteAction.SFA_Configuration.JsrGetFieldList}',
+        JsrGetSFMList: '{!$RemoteAction.SFA_Configuration.JsrGetSFMList}',
+        JsrGetFilterList: '{!$RemoteAction.SFA_Configuration.JsrGetFilterList}',
+        JsrGetGroupProfileList: '{!$RemoteAction.SFA_Configuration.JsrGetGroupProfileList}',
+        JsrGetFieldsOfLookupToObject: '{!$RemoteAction.SFA_Configuration.JsrGetFieldsOfLookupToObject}',
+        JsrGetObjectList: '{!$RemoteAction.SFA_Configuration.JsrGetObjectList}',
+        JsrGetCustomLabels: '{!$RemoteAction.SFA_Configuration.JsrGetCustomLabels}',
+        JsrGetFieldListByDataType: '{!$RemoteAction.SFA_Configuration.JsrGetFieldListByDataType}',
+      },
+      makeJsrRequest: function (jsrMappingKey, request, callback, context, jsrActionParams) {
+
+        var requestStr = JSON.stringify(request);
+        Visualforce.remoting.Manager.invokeAction(SVMX_SFA_JSR.jsrActionMapping[jsrMappingKey], requestStr,
+          function (result, event) {
+            SVMX_SFA_JSR.processResult(result, event, callback, context);
+          },
+          jsrActionParams
+        );
+      },
+      processResult: function (result, event, callback, context) {
+        var ret = { success: false };
+        if (event.status == true) {
+          ret = JSON.parse(result);
+        }
+        callback.call(context, ret, event);
+      }
+    }
+  </script>
+  <html lang="en" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="{!URLFOR($Resource.sfa_configuration, 'SFA_Configuration')}/manifest.json" />
+    <link rel="shortcut icon" href="{!URLFOR($Resource.sfa_configuration, 'SFA_Configuration')}/favicon.ico" />
+    <link href="{!URLFOR($Resource.sfa_configuration, 'SFA_Configuration')}/static/css/main.css" rel="stylesheet" />
+    <title>ServiceMax - Service Flow Admin</title>
+    <apex:slds />
+  </head>
+
+  <body>
+    <div class="slds-scope">
+      <noscript>You need to enable JavaScript to run this app.</noscript>
+      <div id="root"></div>
+    </div>
+    <script>
+      var isRemote = !0;
+      var ASSET_ROOT = "{!URLFOR($Asset.SLDS, '/')}";
+      var PUBLIC_URL = "{!URLFOR($Resource.sfa_configuration, 'SFA_Configuration')}";
+      var userTimeFormat = window.UserContext.timeFormat;
+    </script>
+    <script type="text/javascript"
+      src="{!URLFOR($Resource.sfa_configuration, 'SFA_Configuration')}/static/js/main.js"></script>
+  </body>
+
+  </html>
+</apex:page>
