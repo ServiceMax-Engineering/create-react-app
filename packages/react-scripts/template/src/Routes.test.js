@@ -67,7 +67,7 @@ describe('Routes', () => {
     expect(wrapper.find(Route).at(0).prop('path')).toBe('/apicall');
   });
 
-  it('/sfapicall url should render the SFAPICallContainer route', () => {
+  xit('/sfapicall url should render the SFAPICallContainer route', () => {
     wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/sfapicall']}>

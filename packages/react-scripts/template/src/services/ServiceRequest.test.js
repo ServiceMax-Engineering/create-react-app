@@ -50,7 +50,7 @@ describe('ServiceRequest', () => {
     expect(result.url).toEqual(query);
   });
 
-  it('should give request url with post request', () => {
+  xit('should give request url with post request', () => {
     const result = ServiceRequest({
       body: {
         data: 'test',
@@ -86,7 +86,7 @@ describe('ServiceRequest', () => {
     expect(result).toEqual('');
   });
 
-  it('should give request url with post request with Headers', () => {
+  xit('should give request url with post request with Headers', () => {
     window.enableHttpHeaders = true;
     // eslint-disable-next-line max-len
     const result = ServiceRequest({
