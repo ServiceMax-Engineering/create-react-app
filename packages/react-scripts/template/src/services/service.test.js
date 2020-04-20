@@ -6,7 +6,7 @@ const config = {
   requestParams: { param: 'value' },
 };
 
-describe('service/queryBuilder', () => {
+xdescribe('service/queryBuilder', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });

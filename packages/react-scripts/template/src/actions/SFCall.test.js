@@ -170,7 +170,7 @@ describe('fetching local data', () => {
   });
 });
 
-describe('fetching remote data', () => {
+xdescribe('fetching remote data', () => {
   let store;
   const loadData = {
     id: 12345,
