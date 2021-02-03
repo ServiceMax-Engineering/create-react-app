@@ -38,7 +38,7 @@ const env = getClientEnvironment(publicUrl);
 // Get possible module paths
 const appNodeModules = paths.appNodeModules;
 const uiLightningPath = path.resolve(appNodeModules, '@svmx/ui-components-lightning');
-const uiPredixPath = path.resolve(appNodeModules, '@svmx/ui-components-predix');
+const uiPredixPath = path.resolve(appNodeModules, process.env.REACT_APP_UI_COMPONENTS_PREDIX_PATH || '@svmx/ui-components-predix');
 const uiLibBowerPath = path.resolve(uiPredixPath, 'bower_components');
 const uiLibBuiltBowerPath = path.resolve(uiPredixPath, 'build/polymer');
 
