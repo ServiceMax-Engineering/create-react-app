@@ -17,5 +17,4 @@ const libs = [
   },
 ];
 
-
 module.exports = libs;
