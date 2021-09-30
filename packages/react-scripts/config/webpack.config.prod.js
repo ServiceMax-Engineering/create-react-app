@@ -24,6 +24,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const nodeSass = require('node-sass');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const libs = require('./libs');
@@ -530,6 +531,14 @@ module.exports = {
                 options: {
                   sourceMap: shouldUseSourceMap,
                   includePaths: sassIncludePaths,
+                  functions: {
+                    "env($variable)": variable => {
+                        const value = variable.getValue();
+                        const envValue = process.env[value];
+                        const sassValue = new nodeSass.types.String(envValue);
+                        return sassValue;
+                    }
+                  }
                 },
               },
             ].filter(Boolean)
