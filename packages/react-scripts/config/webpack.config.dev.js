@@ -19,6 +19,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const nodeSass = require('node-sass');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const libs = require('./libs');
@@ -353,6 +354,14 @@ module.exports = {
                 loader: require.resolve('sass-loader'),
                 options: {
                   includePaths: sassIncludePaths,
+                  functions: {
+                    "env($variable)": variable => {
+                        const value = variable.getValue();
+                        const envValue = process.env[value];
+                        const sassValue = new nodeSass.types.String(envValue);
+                        return sassValue;
+                    }
+                  }
                 },
               },
             ],
